@@ -49,7 +49,13 @@ function MovieSearch({ navigation }) {
       if (searchedMovies) {
         movies = JSON.parse(searchedMovies);
       }
-      movies.push(searchedMovie);
+
+      if (movies) {
+        const handleDuplicateSearch = movies.some(
+          (movie) => movie?.title === searchedMovie.title
+        );
+        !handleDuplicateSearch && movies.push(searchedMovie);
+      }
       await AsyncStorage.setItem('movies', JSON.stringify(movies));
       navigation.navigate('MovieDetails', { movieItem });
     } catch (error) {
